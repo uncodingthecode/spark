@@ -1,10 +1,11 @@
 grammar = {}
 
 n = int(input("Enter number of productions: "))
+print("Enter productions (e.g., S->AB|a):")
 
 for _ in range(n):
 
-    production = input("Enter production (Example A->aB|b): ")
+    production = input()
 
     lhs, rhs = production.split("->")
 
