@@ -108,11 +108,7 @@ expression = expression.replace(" ", "")
 
 postfix = infix_to_postfix(expression)
 
-prefix = infix_to_prefix(expression)
-
 print("\nPostfix Expression:", postfix)
-
-print("Prefix Expression:", prefix)
 
 generate_quadruples(postfix)
 
