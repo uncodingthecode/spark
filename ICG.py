@@ -19,29 +19,13 @@ def infix_to_postfix(expression):
 
     for ch in expression:
 
-        # Operand
         if ch.isalnum():
 
             postfix += ch
 
-        # Opening bracket
-        elif ch == '(':
-
-            stack.append(ch)
-
-        # Closing bracket
-        elif ch == ')':
-
-            while stack and stack[-1] != '(':
-                postfix += stack.pop()
-
-            stack.pop()
-
-        # Operator
         else:
 
-            while (stack and stack[-1] != '(' and
-                   precedence[ch] <= precedence[stack[-1]]):
+            while stack and precedence.get(ch,0) <= precedence.get(stack[-1],0):
 
                 postfix += stack.pop()
 
