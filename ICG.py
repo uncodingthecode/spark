@@ -8,7 +8,6 @@ precedence = {
     '^': 3
 }
 
-
 # -----------------------------
 # INFIX TO POSTFIX
 # -----------------------------
@@ -35,36 +34,6 @@ def infix_to_postfix(expression):
         postfix += stack.pop()
 
     return postfix
-
-
-# -----------------------------
-# INFIX TO PREFIX
-# -----------------------------
-def infix_to_prefix(expression):
-
-    # Reverse expression
-    expression = expression[::-1]
-
-    temp = ""
-
-    # Swap brackets
-    for ch in expression:
-
-        if ch == '(':
-            temp += ')'
-
-        elif ch == ')':
-            temp += '('
-
-        else:
-            temp += ch
-
-    postfix = infix_to_postfix(temp)
-
-    prefix = postfix[::-1]
-
-    return prefix
-
 
 # -----------------------------
 # QUADRUPLES
@@ -98,7 +67,6 @@ def generate_quadruples(postfix):
 
             temp_count += 1
 
-
 # -----------------------------
 # TRIPLES
 # -----------------------------
@@ -128,7 +96,6 @@ def generate_triples(postfix):
             stack.append("(" + str(index) + ")")
 
             index += 1
-
 
 # -----------------------------
 # MAIN PROGRAM
