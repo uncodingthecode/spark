@@ -69,7 +69,7 @@ print("\n--------------------")
 print("H RECORD")
 print("--------------------")
 
-print("H", program_name, hex(start_address), hex(program_length))
+print(f"H^{program_name}^{hex(start_address)}^{hex(program_length)}")
 
 
 # -------------------------
@@ -80,4 +80,4 @@ print("\n--------------------")
 print("E RECORD")
 print("--------------------")
 
-print("E", hex(start_address))
+print(f"E^{hex(start_address)}")
