@@ -48,9 +48,7 @@ for i in range(len(program)):
         if line == "MEND":
 
             inside_macro = False
-
-            namtab[macro_name].append(len(deftab)-1)
-
+            namtab[macro_name] = [macro_start, len(deftab)-1]
             macro_name = ""
 
 
@@ -74,6 +72,6 @@ print("\nNAMTAB\n")
 print("Macro Name\tStart\tEnd")
 
 for macro in namtab:
-
-    print(macro, "\t\t", namtab[macro][0],
-          "\t", namtab[macro][1])
+    start = namtab[macro][0]
+    end = namtab[macro][1] if len(namtab[macro]) > 1 else "NA"
+    print(macro, "\t\t", start, "\t", end)
