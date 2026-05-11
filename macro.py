@@ -72,6 +72,5 @@ print("\nNAMTAB\n")
 print("Macro Name\tStart\tEnd")
 
 for macro in namtab:
-    start = namtab[macro][0]
-    end = namtab[macro][1] if len(namtab[macro]) > 1 else "NA"
-    print(macro, "\t\t", start, "\t", end)
+
+    print(macro, "\t\t", namtab[macro][0],"\t", namtab[macro][1])
