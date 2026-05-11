@@ -1,125 +1,83 @@
-# Simple Assembler Program
-
-# OPTAB with instruction sizes
-optab = {
-    "LDA": 3,
-    "STA": 3,
-    "ADD": 3,
-    "SUB": 3,
-    "MUL": 3,
-    "DIV": 3,
-    "JMP": 3
-}
-
-# Input assembly program
-n = int(input("Enter number of lines in assembly program: "))
-
-program = []
-
-print("\nEnter assembly instructions:")
-print("Format: LABEL OPCODE OPERAND\n")
-
-for _ in range(n):
-
-    line = input().split()
-
-    # Handle missing label
-    if len(line) == 2:
-        line = ['-', line[0], line[1]]
-
-    program.append(line)
-
-
-# -----------------------------
-# PASS 1
-# -----------------------------
-
 symbol_table = {}
 
+location_counter = 0
 start_address = 0
-locctr = 0
 program_name = ""
 
-for i in range(len(program)):
+lines = []
 
-    label, opcode, operand = program[i]
+n = int(input("Enter number of lines: "))
 
-    # START
-    if opcode == "START":
+print("\nEnter Assembly Program:\n")
 
-        start_address = int(operand)
-        locctr = start_address
-        program_name = label
+for i in range(n):
+    lines.append(input())
 
+
+# -------------------------
+# PASS 1 (Symbol Table + Addressing)
+# -------------------------
+
+for line in lines:
+
+    parts = line.split()
+
+    if len(parts) == 0:
         continue
 
-    # Add label to symbol table
-    if label != '-':
+    # START statement
+    if "START" in parts:
+        program_name = parts[0]
+        start_address = int(parts[2], 16)
+        location_counter = start_address
+        continue
 
-        symbol_table[label] = locctr
-
-    # Instruction
-    if opcode in optab:
-
-        locctr += optab[opcode]
-
-    # WORD
-    elif opcode == "WORD":
-
-        locctr += 3
-
-    # RESW
-    elif opcode == "RESW":
-
-        locctr += 3 * int(operand)
-
-    # RESB
-    elif opcode == "RESB":
-
-        locctr += int(operand)
-
-    # BYTE
-    elif opcode == "BYTE":
-
-        locctr += 1
-
-    # END
-    elif opcode == "END":
-
+    # END statement
+    if parts[0] == "END":
         break
 
+    # Label present
+    if len(parts) == 3:
+        label = parts[0]
+        symbol_table[label] = hex(location_counter)
 
-program_length = locctr - start_address
+        opcode = parts[1]
+        location_counter += 3   # assuming all instructions = 3 bytes
 
-
-# -----------------------------
-# PRINT SYMBOL TABLE
-# -----------------------------
-
-print("\nSYMBOL TABLE\n")
-
-print("Symbol\tValue")
-
-for symbol in symbol_table:
-
-    print(symbol, "\t", symbol_table[symbol])
+    # No label
+    else:
+        opcode = parts[0]
+        location_counter += 3
 
 
-# -----------------------------
-# H RECORD
-# -----------------------------
+# -------------------------
+# HEADER RECORD (H)
+# -------------------------
 
-print("\nHEADER RECORD")
+program_length = location_counter - start_address
 
-print("H^" + program_name +
-      "^" + str(start_address) +
-      "^" + str(program_length))
+print("\n--------------------")
+print("SYMBOL TABLE")
+print("--------------------")
+
+print("SYMBOL\tADDRESS")
+for sym in symbol_table:
+    print(sym, "\t", symbol_table[sym])
 
 
-# -----------------------------
-# E RECORD
-# -----------------------------
+print("\n--------------------")
+print("H RECORD")
+print("--------------------")
 
-print("\nEND RECORD")
+print("H", program_name, hex(start_address), hex(program_length))
 
-print("E^" + str(start_address))
+
+# -------------------------
+# END RECORD (E)
+# -------------------------
+
+print("\n--------------------")
+print("E RECORD")
+print("--------------------")
+
+print("E", hex(start_address))
